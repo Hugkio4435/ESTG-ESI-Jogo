@@ -1,4 +1,4 @@
-# ESTG-ESI-Joguinho
+# ESTG-ESI-Jogo
 Trabalho de Engenharia de Software I
 
 Textinho de teste
