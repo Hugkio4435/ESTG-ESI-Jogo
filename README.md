@@ -8,7 +8,7 @@ Neste projeto vai se fazer um jogo interativo estilo kahoot & JackBox, onde apen
 
 - Hugo Marques nº 2022115922
 
-- Miguel Colaço nº 2022147589
+- Miguel Colaço nº 2022110267
 
 - Miguel Fernandes nº 20022120874
 
