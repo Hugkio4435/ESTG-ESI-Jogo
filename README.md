@@ -10,7 +10,7 @@ Neste projeto vai se fazer um jogo interativo estilo kahoot & JackBox, onde apen
 
 - Miguel Colaço nº 2022110267
 
-- Miguel Fernandes nº 20022120874
+- Miguel Fernandes nº 2022120874
 
 - Filipe Duque nº 2022112547
 
