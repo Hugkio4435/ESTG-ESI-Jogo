@@ -6,12 +6,12 @@ Neste projeto vai se fazer um jogo interativo estilo kahoot & JackBox, onde apen
 
 # Particiantes:
 
-- Hugo Marques nº2022115922
+- Hugo Marques nº 2022115922
 
 - Miguel Colaço nº
 
-- Miguel Fernandes nº
+- Miguel Fernandes nº 20022120874
 
-- Filipe Duque nº
+- Filipe Duque nº 2022112547
 
-- André Valongo nº
+- André Valongo nº 2022124488
