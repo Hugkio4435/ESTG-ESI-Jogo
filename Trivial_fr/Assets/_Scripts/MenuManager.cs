@@ -1,11 +1,16 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MenuManager : MonoBehaviour
 {
     [Header("Os Nossos Painéis")]
     public GameObject mainMenuPanel;
     public GameObject miniGamesPanel;
-    public GameObject lobbyPanel; 
+    public GameObject lobbyPanel;
+
+
+    [Header("UI Elements")]
+    public TMPro.TextMeshProUGUI roomCodeText; 
 
     private void Start()
     {
@@ -29,16 +34,6 @@ public class MenuManager : MonoBehaviour
         lobbyPanel.SetActive(false);
     }
 
-    
-    public void StartMiniGame1()
-    {
-        // Mais tarde, é AQUI que vamos dizer ao Node.js: "Cria a sala para o Jogo 1!"
-
-        mainMenuPanel.SetActive(false);
-        miniGamesPanel.SetActive(false);
-        lobbyPanel.SetActive(true);
-    }
-
 
     public void QuitGame()
     {
@@ -53,6 +48,31 @@ public class MenuManager : MonoBehaviour
 
         #endif
     }
+
+
+    public void RequestGameStart(string gameID)
+    {
+        // Enviamos esse ID específico para o NetworkManager
+        NetworkManager.Instance.RequestRoomCreation(gameID);
+    }
+
+    // 4. Função chamada pelo NetworkManager QUANDO o servidor responde
+    public void StartMiniGame(string roomCode)
+    {
+        mainMenuPanel.SetActive(false);
+        miniGamesPanel.SetActive(false);
+
+
+        lobbyPanel.SetActive(true);
+        // Atualiza o texto na UI para mostrar o código real
+        roomCodeText.text =  roomCode;
+
+    }
+
+
+
+
+
 
 
 

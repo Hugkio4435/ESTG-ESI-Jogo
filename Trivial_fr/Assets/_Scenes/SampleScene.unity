@@ -505,6 +505,7 @@ GameObject:
   m_Component:
   - component: {fileID: 413414931}
   - component: {fileID: 413414930}
+  - component: {fileID: 413414932}
   m_Layer: 0
   m_Name: _GameManager
   m_TagString: Untagged
@@ -527,6 +528,7 @@ MonoBehaviour:
   mainMenuPanel: {fileID: 2033425711}
   miniGamesPanel: {fileID: 1124468478}
   lobbyPanel: {fileID: 1712130602}
+  roomCodeText: {fileID: 2086541578}
 --- !u!4 &413414931
 Transform:
   m_ObjectHideFlags: 0
@@ -542,6 +544,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &413414932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413414929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6860d93cb7e43dd49a5a1cf04a3d5d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkManager
+  menuManager: {fileID: 413414930}
 --- !u!1 &498423506
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,14 +2003,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 413414930}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: StartMiniGame1
-        m_Mode: 1
+        m_MethodName: RequestGameStart
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Split_Room
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1376887378
@@ -2254,7 +2269,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1540524112}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 413414930}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: RequestGameStart
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Fill_Blanks
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1540524112
 MonoBehaviour:
   m_ObjectHideFlags: 0
