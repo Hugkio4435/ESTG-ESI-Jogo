@@ -1,127 +1,111 @@
 const express = require("express");
 const http = require("http");
-const WebSocket = require("ws");
+const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+
+const io = new Server(server, {
+  cors: {
+    origin: "*"
+  }
+});
 
 app.use(express.static("public"));
 
-let unity = null;
-let rooms = {};
+// Função para gerar o código da sala, exemplo: "F7X2"
+function generateRoomCode() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "";
 
-wss.on("connection", (socket) => {
-  console.log("Someone connected");
+  for (let i = 0; i < 4; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
 
-  socket.on("message", (msg) => {
-    const data = JSON.parse(msg);
+  return code;
+}
 
-    if (data.type === "unity") {
-      unity = socket;
-      console.log("Unity connected");
-    }
+io.on("connection", (socket) => {
+  console.log(`Nova ligação detetada: ${socket.id}`);
 
-    if (data.type === "join") {
-      if (!rooms[data.room]) {
-        rooms[data.room] = [];
-      }
+  // ==========================================
+  // 1. O UNITY PEDE PARA CRIAR UMA SALA
+  // ==========================================
+  socket.on("CREATE_ROOM", (data) => {
+    const roomCode = generateRoomCode();
 
-        rooms[data.room].push({
-            id: socket,
-            name: data.name,
-            ready: false,
-            host: rooms[data.room].length === 0
-        });
+    // O Unity entra na sua própria sala virtual
+    socket.join(roomCode);
 
-      console.log("ROOMS:");
-      console.log(rooms);
+    // Guardamos na memória deste socket que ele é o Host desta sala
+    socket.isHost = true;
+    socket.roomCode = roomCode;
 
-      wss.clients.forEach((client) => {
-        client.send(JSON.stringify({
-            type: "players",
-            room: data.room,
-            players: rooms[data.room].map(player => ({
-                name: player.name,
-                ready: player.ready,
-                host: player.host
-            }))
-        }));
+    console.log(`Unity criou a sala: ${roomCode} para o jogo: ${data.gameType}`);
+
+    // Devolvemos o código ao Unity para ele mostrar na TV
+    socket.emit("ROOM_CREATED", {
+      roomCode: roomCode,
+      gameType: data.gameType
+    });
+  });
+
+  // ==========================================
+  // 2. O TELEMÓVEL/JOGADOR PEDE PARA ENTRAR
+  // ==========================================
+  socket.on("JOIN_ROOM", (data) => {
+    const roomCode = data.room.toUpperCase();
+
+    // Verifica se a sala realmente existe no servidor
+    if (io.sockets.adapter.rooms.has(roomCode)) {
+      socket.join(roomCode);
+
+      socket.playerName = data.name;
+      socket.roomCode = roomCode;
+
+      console.log(`${data.name} entrou na sala ${roomCode}`);
+
+      // Avisa todos os membros da sala, incluindo o Unity
+      io.to(roomCode).emit("PLAYER_JOINED", {
+        name: data.name
       });
-    }
-
-    if (data.type === "ready") {
-
-        const roomPlayers = rooms[data.room];
-
-        roomPlayers.forEach((player) => {
-            if (player.name === data.name) {
-                player.ready = true;
-            }
-        });
-
-        wss.clients.forEach((client) => {
-            client.send(JSON.stringify({
-                type: "players",
-                room: data.room,
-                players: rooms[data.room].map(player => ({
-                    name: player.name,
-                    ready: player.ready,
-                    host: player.host
-                }))
-            }));
-        });
-    }
-
-    if (data.type === "start_game") {
-        console.log("Game started in room:", data.room);
-
-        wss.clients.forEach((client) => {
-            client.send(JSON.stringify({
-                type: "game_started",
-                room: data.room
-            }));
-        });
-    }
-
-    if (data.type === "button") {
-      console.log("Button pressed:", data.value);
-
-      if (unity) {
-        unity.send(JSON.stringify({
-          type: "button",
-          value: data.value
-        }));
-      }
+    } else {
+      socket.emit("ERROR", {
+        message: "Sala não encontrada!"
+      });
     }
   });
 
-  socket.on("close", () => {
-    console.log("Someone disconnected");
-
-    for (const room in rooms) {
-      rooms[room] = rooms[room].filter(player => player.id !== socket);
-
-        if (rooms[room].length === 0) {
-            delete rooms[room];
-            continue;
-        }
-
-      wss.clients.forEach((client) => {
-        client.send(JSON.stringify({
-            type: "players",
-            room: room,
-            players: rooms[room].map(player => ({
-                name: player.name,
-                ready: player.ready,
-                host: player.host
-            }))
-        }));
+  // ==========================================
+  // 3. O JOGADOR CLICA NUM BOTÃO
+  // ==========================================
+  socket.on("PLAYER_ACTION", (data) => {
+    if (socket.roomCode) {
+      io.to(socket.roomCode).emit("ACTION_RECEIVED", {
+        playerName: socket.playerName,
+        action: data.action
       });
+    }
+  });
+
+  // ==========================================
+  // 4. ALGUÉM SE DESLIGA
+  // ==========================================
+  socket.on("disconnect", () => {
+    console.log(`Desconectado: ${socket.id}`);
+
+    if (socket.roomCode) {
+      if (socket.isHost) {
+        io.to(socket.roomCode).emit("HOST_DISCONNECTED");
+      } else {
+        io.to(socket.roomCode).emit("PLAYER_LEFT", {
+          name: socket.playerName
+        });
+      }
     }
   });
 });
 
 server.listen(3000, () => {
-  console.log("Server running at http://109.48.220.128:3000");
+  console.log("Servidor Socket.IO a correr na porta 3000!");
 });
