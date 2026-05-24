@@ -33,15 +33,17 @@ public class NetworkManager : MonoBehaviour
 
     private void Start()
     {
-        // Configura a ligação com o servidor
         var uri = new Uri(serverURL);
         socket = new SocketIOUnity(uri, new SocketIOOptions
         {
             Transport = SocketIOClient.Transport.TransportProtocol.WebSocket
         });
 
-        // Configurar as funções que vão ouvir o servidor
         SetupSocketListeners();
+
+        // NOVA LINHA: Liga ao servidor assim que o jogo arranca!
+        Debug.Log("A iniciar ligação ao Servidor em background...");
+        socket.Connect();
     }
 
     private void ConnectToServer()
@@ -66,6 +68,8 @@ public class NetworkManager : MonoBehaviour
         socket.On("ROOM_CREATED", (response) =>
         {
             RoomCreatedResponse data = response.GetValue<RoomCreatedResponse>();
+
+            Debug.Log("O Unity recebeu do servidor o código: " + data.roomCode);
 
             newRoomCode = data.roomCode;
             roomCodeReceived = true; // Avisa o Update que já temos o código
@@ -98,16 +102,17 @@ public class NetworkManager : MonoBehaviour
     /// </summary>
     public void RequestRoomCreation(string minigameType)
     {
-        // Garante que o socket está ligado antes de pedir a sala
-        ConnectToServer();
-
-        Debug.Log("A pedir ao servidor para criar uma sala para: " + minigameType);
-
-        // Criar o objeto anónimo exatamente com o formato que o Node.js espera
-        var payload = new { gameType = minigameType };
-
-        // Usa 'Emit' síncrono para enviar o evento "CREATE_ROOM"
-        socket.Emit("CREATE_ROOM", payload);
+        // Verifica se o tubo está realmente aberto antes de enviar
+        if (socket != null && socket.Connected)
+        {
+            Debug.Log("A pedir ao servidor para criar uma sala para: " + minigameType);
+            var payload = new { gameType = minigameType };
+            socket.Emit("CREATE_ROOM", payload);
+        }
+        else
+        {
+            Debug.LogError("O Unity ainda não conectou ao servidor! Espera um segundo.");
+        }
     }
 
     private void Update()
@@ -122,10 +127,21 @@ public class NetworkManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        CleanupSocket();
+    }
+
+    private void OnApplicationQuit()
+    {
+        CleanupSocket();
+    }
+
+    private void CleanupSocket()
+    {
         if (socket != null)
         {
-            // Usa 'Disconnect' síncrono quando o jogo é fechado
             socket.Disconnect();
+            socket.Dispose(); // Isto assassina a thread de background definitivamente
+            socket = null;
         }
     }
 }
@@ -139,19 +155,19 @@ public class NetworkManager : MonoBehaviour
 [Serializable]
 public class RoomCreatedResponse
 {
-    public string roomCode;
-    public string gameType;
+    public string roomCode { get; set; }
+    public string gameType { get; set; }
 }
 
 [Serializable]
 public class PlayerResponse
 {
-    public string name;
+    public string name { get; set; }
 }
 
 [Serializable]
 public class ActionResponse
 {
-    public string playerName;
-    public string action;
+    public string playerName { get; set; }
+    public string action { get; set; }
 }
