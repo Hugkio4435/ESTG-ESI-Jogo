@@ -13,7 +13,7 @@ const io = new Server(server, {
 
 app.use(express.static("public"));
 
-// Função para gerar o código da sala, exemplo: "F7X2"
+// Função para gerar o código da sala
 function generateRoomCode() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let code = "";
@@ -28,9 +28,7 @@ function generateRoomCode() {
 io.on("connection", (socket) => {
   console.log(`Nova ligação detetada: ${socket.id}`);
 
-  // ==========================================
-  // 1. O UNITY PEDE PARA CRIAR UMA SALA
-  // ==========================================
+  
   socket.on("CREATE_ROOM", (data) => {
     const roomCode = generateRoomCode();
 
@@ -50,9 +48,7 @@ io.on("connection", (socket) => {
     });
   });
 
-  // ==========================================
-  // 2. O TELEMÓVEL/JOGADOR PEDE PARA ENTRAR
-  // ==========================================
+
   socket.on("JOIN_ROOM", (data) => {
     const roomCode = data.room.toUpperCase();
 
@@ -76,9 +72,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  // ==========================================
-  // 3. O JOGADOR CLICA NUM BOTÃO
-  // ==========================================
+  
   socket.on("PLAYER_ACTION", (data) => {
     if (socket.roomCode) {
       io.to(socket.roomCode).emit("ACTION_RECEIVED", {
@@ -88,9 +82,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  // ==========================================
-  // 4. ALGUÉM SE DESLIGA
-  // ==========================================
+  
   socket.on("disconnect", () => {
     console.log(`Desconectado: ${socket.id}`);
 
