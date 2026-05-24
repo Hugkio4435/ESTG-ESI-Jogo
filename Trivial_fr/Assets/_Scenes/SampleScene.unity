@@ -557,6 +557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkManager
   menuManager: {fileID: 413414930}
+  serverURL: http://localhost:3000
 --- !u!1 &498423506
 GameObject:
   m_ObjectHideFlags: 0
