@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 using SocketIOClient;
 
 public class NetworkManager : MonoBehaviour
 {
-    // ATUALIZADO: Agora a fila guarda o pacote inteiro (PlayerResponse) e não apenas uma string
-    private System.Collections.Generic.Queue<PlayerResponse> playersToSpawn = new System.Collections.Generic.Queue<PlayerResponse>();
-    private System.Collections.Generic.Queue<string> playersToRemove = new System.Collections.Generic.Queue<string>();
+    // Filas para garantir que as atualizações de rede correm na Main Thread do Unity
+    private Queue<PlayerResponse> playersToSpawn = new Queue<PlayerResponse>();
+    private Queue<string> playersToRemove = new Queue<string>();
+    private Queue<ActionResponse> actionsToProcess = new Queue<ActionResponse>();
 
     public static NetworkManager Instance;
 
@@ -43,32 +45,43 @@ public class NetworkManager : MonoBehaviour
 
         SetupSocketListeners();
 
-        Debug.Log("A iniciar ligação ao Servidor em background...");
+        Debug.Log("A iniciar ligacao ao Servidor em background...");
         socket.Connect();
-    }
-
-    private void ConnectToServer()
-    {
-        if (!socket.Connected)
-        {
-            Debug.Log("A ligar ao Servidor Node.js em: " + serverURL);
-            socket.Connect();
-        }
     }
 
     private void SetupSocketListeners()
     {
         socket.OnConnected += (sender, e) =>
         {
-            Debug.Log("Ligação estabelecida com o servidor!");
+            Debug.Log("Ligacao estabelecida com o servidor!");
         };
 
         socket.On("ROOM_CREATED", (response) =>
         {
-            RoomCreatedResponse data = response.GetValue<RoomCreatedResponse>();
-            Debug.Log("O Unity recebeu do servidor o código: " + data.roomCode);
-            newRoomCode = data.roomCode;
-            roomCodeReceived = true;
+            Debug.Log("O Unity recebeu uma resposta do servidor!");
+            try
+            {
+                // 1. Lemos os dados em bruto para a consola para vermos o que chegou
+                Debug.Log("Pacote bruto recebido: " + response.ToString());
+
+                // 2. Descodificamos de forma segura
+                RoomCreatedResponse data = response.GetValue<RoomCreatedResponse>();
+
+                if (data != null && !string.IsNullOrEmpty(data.roomCode))
+                {
+                    Debug.Log("Codigo da sala lido com sucesso: " + data.roomCode);
+                    newRoomCode = data.roomCode;
+                    roomCodeReceived = true;
+                }
+                else
+                {
+                    Debug.LogError("O Unity recebeu a mensagem, mas a variável roomCode veio vazia. Problema no JSON!");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError("Erro critico ao ler o pacote do servidor: " + ex.Message);
+            }
         });
 
         socket.On("PLAYER_JOINED", (response) =>
@@ -76,17 +89,21 @@ public class NetworkManager : MonoBehaviour
             PlayerResponse data = response.GetValue<PlayerResponse>();
             Debug.Log($"O jogador [{data.name}] entrou com o Avatar {data.avatarId}!");
 
-            // Coloca o PACOTE INTEIRO na fila
             lock (playersToSpawn)
             {
                 playersToSpawn.Enqueue(data);
             }
         });
 
+        // ATUALIZADO: Agora lê a nova estrutura de ações (texto e votos)
         socket.On("ACTION_RECEIVED", (response) =>
         {
             ActionResponse data = response.GetValue<ActionResponse>();
-            Debug.Log($"Ação recebida de {data.playerName}: {data.action}");
+
+            lock (actionsToProcess)
+            {
+                actionsToProcess.Enqueue(data);
+            }
         });
 
         socket.On("PLAYER_LEFT", (response) =>
@@ -106,12 +123,29 @@ public class NetworkManager : MonoBehaviour
         if (socket != null && socket.Connected)
         {
             Debug.Log("A pedir ao servidor para criar uma sala para: " + minigameType);
-            var payload = new { gameType = minigameType };
+
+            // Dicionário garante um JSON perfeitamente formatado
+            var payload = new Dictionary<string, string> { { "gameType", minigameType } };
             socket.Emit("CREATE_ROOM", payload);
         }
-        else
+    }
+
+    // NOVA FUNÇÃO: Ordena aos telemóveis para saírem do Lobby
+    public void StartGameLoop()
+    {
+        if (socket != null && socket.Connected)
         {
-            Debug.LogError("O Unity ainda não conectou ao servidor! Espera um segundo.");
+            socket.Emit("START_GAME");
+        }
+    }
+
+    // NOVA FUNÇÃO: O "Megafone" do Unity para mudar interfaces nos telemóveis
+    public void BroadcastToPhones(string eventName, object payloadData)
+    {
+        if (socket != null && socket.Connected)
+        {
+            var envelope = new { @event = eventName, payload = payloadData };
+            socket.Emit("HOST_BROADCAST", envelope);
         }
     }
 
@@ -123,7 +157,6 @@ public class NetworkManager : MonoBehaviour
             menuManager.StartMiniGame(newRoomCode);
         }
 
-        // CORRIGIDO: Retira o pacote inteiro da fila e passa o Nome e o AvatarID para o MenuManager
         if (playersToSpawn.Count > 0)
         {
             lock (playersToSpawn)
@@ -139,6 +172,16 @@ public class NetworkManager : MonoBehaviour
             {
                 string playerLeft = playersToRemove.Dequeue();
                 menuManager.RemovePlayerFromUI(playerLeft);
+            }
+        }
+
+        // NOVO: Processa as ações recebidas e envia-as para o MenuManager
+        if (actionsToProcess.Count > 0)
+        {
+            lock (actionsToProcess)
+            {
+                ActionResponse newAction = actionsToProcess.Dequeue();
+                menuManager.HandlePlayerAction(newAction);
             }
         }
     }
@@ -165,7 +208,7 @@ public class NetworkManager : MonoBehaviour
 }
 
 // ============================================================================
-// CLASSES AUXILIARES (DTOs)
+// CLASSES AUXILIARES (DTOs) - Sem { get; set; } para evitar erros de leitura
 // ============================================================================
 
 [Serializable]
@@ -179,12 +222,14 @@ public class RoomCreatedResponse
 public class PlayerResponse
 {
     public string name { get; set; }
-    public int avatarId { get; set; } // ATUALIZADO PARA LER O AVATAR ID
+    public int avatarId { get; set; }
 }
 
 [Serializable]
 public class ActionResponse
 {
     public string playerName { get; set; }
-    public string action { get; set; }
+    public string actionType { get; set; }
+    public string word { get; set; }
+    public bool voteValue { get; set; }
 }

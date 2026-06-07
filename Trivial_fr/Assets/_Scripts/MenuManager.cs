@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.UI; // Necessário para gerir os componentes de Imagem da UI
+using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Linq; // Necessário para podermos usar o .Any() e o .FirstOrDefault()
+using System.Linq;
 
-// Cápsula de dados para associar o nome do jogador ao ID do seu avatar
 public class ConnectedPlayer
 {
     public string playerName;
@@ -12,28 +11,30 @@ public class ConnectedPlayer
 
 public class MenuManager : MonoBehaviour
 {
-    [Header("Os Nossos Painéis")]
+    [Header("Os Nossos Paineis")]
     public GameObject mainMenuPanel;
     public GameObject miniGamesPanel;
     public GameObject lobbyPanel;
+    public GameObject splitRoomPanel; // NOVO: O painel do minijogo
+
+    [Header("Gestores de Minijogos")]
+    public SplitRoomManager splitRoomManager;
 
     [Header("UI Elements")]
     public TMPro.TextMeshProUGUI roomCodeText;
 
     [Header("Lobby UI - Grelha de Jogadores")]
-    public TMPro.TextMeshProUGUI[] playerSlotTexts; // Array com os 8 textos dos slots
-    public Image[] playerSlotImages;                // Array com as 8 imagens dos slots
+    public TMPro.TextMeshProUGUI[] playerSlotTexts;
+    public Image[] playerSlotImages;
 
-    [Header("A Tua Coleção de Avatares")]
-    public Sprite[] availableAvatars;               // Array com as 10 imagens reais (Sprites) no Unity
-    public Sprite placeholderAvatar;                // Nova variável para a imagem predefinida (ex: silhueta)
+    [Header("A Tua Colecao de Avatares")]
+    public Sprite[] availableAvatars;
+    public Sprite placeholderAvatar;
 
-    // Lista dinâmica que guarda os jogadores atualmente conectados na sala
     private List<ConnectedPlayer> activePlayers = new List<ConnectedPlayer>();
 
     public void AddPlayerToUI(string playerName, int avatarId)
     {
-        // Só adiciona o jogador se ele ainda não estiver na lista (evita duplicados)
         if (!activePlayers.Any(p => p.playerName == playerName))
         {
             activePlayers.Add(new ConnectedPlayer { playerName = playerName, avatarId = avatarId });
@@ -43,7 +44,6 @@ public class MenuManager : MonoBehaviour
 
     public void RemovePlayerFromUI(string playerName)
     {
-        // Procura o jogador pelo nome e remove-o da lista
         var playerToRemove = activePlayers.FirstOrDefault(p => p.playerName == playerName);
         if (playerToRemove != null)
         {
@@ -52,44 +52,38 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    // Função que limpa a UI e redesenha todos os slots de acordo com a lista ativa
     private void RefreshPlayersUI()
     {
-        // 1. Reset completo: Coloca todos os 8 slots em modo de espera e define a imagem predefinida
         for (int i = 0; i < playerSlotTexts.Length; i++)
         {
             playerSlotTexts[i].text = "Waiting for user...";
-            playerSlotTexts[i].color = new Color(0.6f, 0.6f, 0.6f); // Cor cinzenta
+            playerSlotTexts[i].color = new Color(0.6f, 0.6f, 0.6f);
             playerSlotTexts[i].fontStyle = TMPro.FontStyles.Italic;
 
             if (playerSlotImages.Length > i && playerSlotImages[i] != null)
             {
-                playerSlotImages[i].sprite = placeholderAvatar; // Define o avatar predefinido
-                playerSlotImages[i].color = new Color(1f, 1f, 1f, 0.4f); // Deixa a imagem semi-transparente (efeito de vazio)
-                playerSlotImages[i].gameObject.SetActive(true); // Garante que a imagem fica visível
+                playerSlotImages[i].sprite = placeholderAvatar;
+                playerSlotImages[i].color = new Color(1f, 1f, 1f, 0.4f);
+                playerSlotImages[i].gameObject.SetActive(true);
             }
         }
 
-        // 2. Preenchimento: Atualiza os slots com os dados dos jogadores que estão na sala
         for (int i = 0; i < activePlayers.Count; i++)
         {
-            if (i >= playerSlotTexts.Length) break; // Proteção para não estourar o limite de 8 slots
+            if (i >= playerSlotTexts.Length) break;
 
-            // Atualiza o texto do nome
             playerSlotTexts[i].text = activePlayers[i].playerName;
-            playerSlotTexts[i].color = Color.white; // Cor branca para jogador ativo
+            playerSlotTexts[i].color = Color.white;
             playerSlotTexts[i].fontStyle = TMPro.FontStyles.Bold;
 
-            // Atualiza a imagem do Avatar
             if (playerSlotImages.Length > i && playerSlotImages[i] != null)
             {
                 int selecionadoId = activePlayers[i].avatarId;
 
-                // Garante que o ID enviado pelo telemóvel existe no array de Sprites do Unity
                 if (selecionadoId >= 0 && selecionadoId < availableAvatars.Length)
                 {
                     playerSlotImages[i].sprite = availableAvatars[selecionadoId];
-                    playerSlotImages[i].color = Color.white; // Restaura a opacidade total (100% visível)
+                    playerSlotImages[i].color = Color.white;
                     playerSlotImages[i].gameObject.SetActive(true);
                 }
             }
@@ -106,6 +100,7 @@ public class MenuManager : MonoBehaviour
         mainMenuPanel.SetActive(true);
         miniGamesPanel.SetActive(false);
         lobbyPanel.SetActive(false);
+        if (splitRoomPanel != null) splitRoomPanel.SetActive(false);
     }
 
     public void ShowMiniGamesPanel()
@@ -113,12 +108,12 @@ public class MenuManager : MonoBehaviour
         mainMenuPanel.SetActive(false);
         miniGamesPanel.SetActive(true);
         lobbyPanel.SetActive(false);
+        if (splitRoomPanel != null) splitRoomPanel.SetActive(false);
     }
 
     public void QuitGame()
     {
         Debug.Log("A fechar o jogo...");
-
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -136,10 +131,40 @@ public class MenuManager : MonoBehaviour
         mainMenuPanel.SetActive(false);
         miniGamesPanel.SetActive(false);
         lobbyPanel.SetActive(true);
+        if (splitRoomPanel != null) splitRoomPanel.SetActive(false);
 
         roomCodeText.text = roomCode;
-
-        // Garante que o Lobby começa limpo e no estado correto de espera
         RefreshPlayersUI();
+    }
+
+    public void StartTheGame()
+    {
+        if (activePlayers.Count < 2)
+        {
+            Debug.LogWarning("Precisas de pelo menos 2 jogadores para jogar!");
+            return;
+        }
+
+        Debug.Log("A transitar do Lobby para o Minijogo...");
+
+        // 1. Avisa os telemóveis para saírem do modo Lobby
+        NetworkManager.Instance.StartGameLoop();
+
+        // 2. Transita a interface no Unity
+        lobbyPanel.SetActive(false);
+        if (splitRoomPanel != null) splitRoomPanel.SetActive(true);
+
+        // 3. Inicia a lógica no motor do jogo
+        splitRoomManager.InitializeGame(activePlayers);
+    }
+
+    // NOVA FUNÇÃO: O NetworkManager entrega aqui as ações, e nós passamos para o jogo ativo
+    public void HandlePlayerAction(ActionResponse actionData)
+    {
+        // Se o painel do minijogo estiver ligado, enviamos a ação para o respetivo manager
+        if (splitRoomPanel != null && splitRoomPanel.activeInHierarchy)
+        {
+            splitRoomManager.ProcessAction(actionData);
+        }
     }
 }
