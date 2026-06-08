@@ -130,6 +130,15 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    public void CloseRoom()
+    {
+        if (socket != null && socket.Connected)
+        {
+            socket.Emit("CLOSE_ROOM");
+            roomCodeReceived = false;
+        }
+    }
+
     // NOVA FUNÇÃO: Ordena aos telemóveis para saírem do Lobby
     public void StartGameLoop()
     {

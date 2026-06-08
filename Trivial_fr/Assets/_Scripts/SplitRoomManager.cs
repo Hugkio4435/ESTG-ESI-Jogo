@@ -37,6 +37,7 @@ public class SplitRoomManager : MonoBehaviour
     [Header("Base de Dados de Frases")]
     private List<string> prompts = new List<string>()
     {
+        "Tu recebes 2.000€ em dinheiro todas as semanas para o resto da tua vida, mas sob uma condição, tu precisas de fazer uma tatuagem permanente na tua cara onde diz [BLANK]. Ela tem de cobrir a tua testa. Tu fazes a tatuagem?",
         "Recebes um milhao de euros, mas tens de viver o resto da vida com [BLANK]. Aceitas?",
         "Podes ter o superpoder de voar, mas sempre que aterrares tens de [BLANK]. Aceitas?",
         "Es o melhor programador do mundo, mas o teu teclado so tem a tecla [BLANK]. Aceitas?",

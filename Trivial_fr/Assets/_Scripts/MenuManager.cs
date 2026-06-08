@@ -167,4 +167,27 @@ public class MenuManager : MonoBehaviour
             splitRoomManager.ProcessAction(actionData);
         }
     }
+
+
+
+    public void LeaveLobby()
+    {
+        Debug.Log("A sair do Lobby e a fechar a sala...");
+
+        // 1. Avisa o servidor para fechar a sala
+        NetworkManager.Instance.CloseRoom();
+
+        // 2. Limpa os jogadores antigos para que o próximo lobby comece do zero
+        activePlayers.Clear();
+        RefreshPlayersUI();
+
+        // 3. Troca a interface visual
+        lobbyPanel.SetActive(false);
+        miniGamesPanel.SetActive(true);
+    }
+
+
+
+
+
 }
