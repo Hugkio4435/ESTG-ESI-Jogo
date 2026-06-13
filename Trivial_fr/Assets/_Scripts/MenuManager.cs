@@ -56,8 +56,8 @@ public class MenuManager : MonoBehaviour
     {
         for (int i = 0; i < playerSlotTexts.Length; i++)
         {
-            playerSlotTexts[i].text = "Waiting for user...";
-            playerSlotTexts[i].color = new Color(0.6f, 0.6f, 0.6f);
+            playerSlotTexts[i].text = "Espaço Vazio";
+            playerSlotTexts[i].color = new Color(0f, 0f, 0f, 0.5f);
             playerSlotTexts[i].fontStyle = TMPro.FontStyles.Italic;
 
             if (playerSlotImages.Length > i && playerSlotImages[i] != null)
