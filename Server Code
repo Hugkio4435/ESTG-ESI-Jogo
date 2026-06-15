@@ -13,76 +13,117 @@ const io = new Server(server, {
 
 app.use(express.static("public"));
 
-// Função para gerar o código da sala
+// Funcao para gerar o codigo da sala
 function generateRoomCode() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let code = "";
-
   for (let i = 0; i < 4; i++) {
     code += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-
   return code;
 }
 
 io.on("connection", (socket) => {
-  console.log(`Nova ligação detetada: ${socket.id}`);
+  console.log(`Nova ligacao detetada: ${socket.id}`);
 
-  
   socket.on("CREATE_ROOM", (data) => {
     const roomCode = generateRoomCode();
 
-    // O Unity entra na sua própria sala virtual
+    // O Unity entra na sua propria sala virtual
     socket.join(roomCode);
 
-    // Guardamos na memória deste socket que ele é o Host desta sala
+    // Guardamos na memoria deste socket que ele e o Host desta sala
     socket.isHost = true;
     socket.roomCode = roomCode;
 
     console.log(`Unity criou a sala: ${roomCode} para o jogo: ${data.gameType}`);
 
-    // Devolvemos o código ao Unity para ele mostrar na TV
+    // Devolvemos o codigo ao Unity para ele mostrar na TV
     socket.emit("ROOM_CREATED", {
       roomCode: roomCode,
       gameType: data.gameType
     });
   });
 
+  // Evento para o Unity iniciar o jogo
+  socket.on("START_GAME", () => {
+    if (socket.isHost && socket.roomCode) {
+      console.log(`Unity deu ordem de arranque para a sala: ${socket.roomCode}`);
+      io.to(socket.roomCode).emit("GAME_STARTED");
+    }
+  });
+
+  // Evento para o Unity enviar ordens complexas para os telemoveis
+  socket.on("HOST_BROADCAST", (data) => {
+    if (socket.isHost && socket.roomCode) {
+      io.to(socket.roomCode).emit(data.event, data.payload);
+    }
+  });
+
+  // Evento quando o Unity decide fechar o Lobby e voltar atrás
+  socket.on("CLOSE_ROOM", () => {
+    if (socket.isHost && socket.roomCode) {
+      console.log(`O Unity fechou a sala: ${socket.roomCode}`);
+      
+      // Avisa todos os telemoveis para voltarem ao ecra inicial
+      io.to(socket.roomCode).emit("ROOM_CLOSED");
+      
+      // O Unity abandona a sala virtual
+      socket.leave(socket.roomCode);
+      socket.roomCode = null;
+      socket.isHost = false;
+    }
+  });
 
   socket.on("JOIN_ROOM", (data) => {
-    const roomCode = data.room.toUpperCase();
+    console.log("Dados puros recebidos do HTML:", data);
 
-    // Verifica se a sala realmente existe no servidor
-    if (io.sockets.adapter.rooms.has(roomCode)) {
+    const roomCode = data.room.toUpperCase();
+    
+    // 1. Limpa o nome
+    let safeName = data.name.trim().substring(0, 11);
+    if (safeName === "") safeName = "Jogador Misterioso";
+
+    // 2. Extrai o ID do avatar em seguranca (se falhar, assume 0)
+    let safeAvatarId = parseInt(data.avatarId) || 0;
+
+    // 3. Verifica se a sala existe E verifica a lotação
+    const room = io.sockets.adapter.rooms.get(roomCode);
+
+    if (room) {
+      // Se a sala já tiver 9 ligações (1 Unity + 8 Jogadores), rejeita a entrada!
+      if (room.size >= 9) {
+        socket.emit("ERROR", { message: "A sala já está cheia (Máx: 8 Jogadores)!" });
+        return; 
+      }
+
       socket.join(roomCode);
 
-      socket.playerName = data.name;
+      socket.playerName = safeName;
       socket.roomCode = roomCode;
 
-      console.log(`${data.name} entrou na sala ${roomCode}`);
+      console.log(`${safeName} entrou na sala ${roomCode} com o Avatar ${safeAvatarId}`);
 
       // Avisa todos os membros da sala, incluindo o Unity
       io.to(roomCode).emit("PLAYER_JOINED", {
-        name: data.name
+        name: safeName,
+        avatarId: safeAvatarId
       });
     } else {
       socket.emit("ERROR", {
-        message: "Sala não encontrada!"
+        message: "Sala nao encontrada! Verifica o código."
       });
     }
   });
 
-  
+  // Reencaminha a acao completa e injeta o nome do jogador
   socket.on("PLAYER_ACTION", (data) => {
     if (socket.roomCode) {
-      io.to(socket.roomCode).emit("ACTION_RECEIVED", {
-        playerName: socket.playerName,
-        action: data.action
-      });
+      data.playerName = socket.playerName;
+      io.to(socket.roomCode).emit("ACTION_RECEIVED", data);
     }
   });
 
-  
   socket.on("disconnect", () => {
     console.log(`Desconectado: ${socket.id}`);
 
@@ -98,6 +139,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("Servidor Socket.IO a correr na porta 3000!");
+server.listen(8080, '127.0.0.1', () => {
+  console.log("Servidor Socket.IO a correr na porta 8080 (127.0.0.1)!");
 });
