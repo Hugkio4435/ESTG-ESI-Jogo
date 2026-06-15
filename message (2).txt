@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comando Trivial</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 30px; background: #222; color: white; }
+        input, button { padding: 15px; margin: 10px; font-size: 18px; border-radius: 8px; width: 80%; max-width: 300px; }
+        .btn-entrar { background: #4CAF50; color: white; cursor: pointer; border: none; font-weight: bold; }
+        
+        /* Estilos da grelha de avatares */
+        .avatar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 300px; margin: 20px auto; }
+        .avatar-btn { 
+            background: #555; color: white; border: 3px solid transparent; 
+            border-radius: 8px; padding: 5px; cursor: pointer; 
+            display: flex; justify-content: center; align-items: center;
+        }
+        .avatar-btn.selected { border-color: #4CAF50; background: #333; }
+    </style>
+</head>
+<body>
+    <div id="loginScreen">
+        <h2>Entrar no Jogo</h2>
+        <input type="text" id="playerName" placeholder="O teu Nome" maxlength="11"><br>
+        <input type="text" id="roomCode" placeholder="Codigo da Sala"><br>
+        
+        <h3>Escolhe um Avatar</h3>
+        <div class="avatar-grid" id="avatarContainer"></div>
+
+        <!-- Mensagem de erro a vermelho (escondida por defeito) -->
+        <p id="errorMessage" style="color: #e74c3c; font-weight: bold; font-size: 18px; display: none;"></p>
+
+        <button class="btn-entrar" onclick="joinGame()">ENTRAR NA SALA</button>
+        <h3 id="waitingText" style="display: none; color: #4CAF50;">Aguarde, a olhar para o ecra principal...</h3>
+    </div>
+
+    <div id="gameScreen" style="display: none;">
+        
+        <div id="waitingSection" style="display: none;">
+            <h3 id="gameWaitingText">A aguardar...</h3>
+        </div>
+
+        <div id="writingSection" style="display: none;">
+            <h3>Preenche o espaco em branco:</h3>
+            <p id="promptText" style="font-style: italic; color: #ccc; font-size: 20px;"></p>
+            <input type="text" id="blankWord" placeholder="A tua resposta..." maxlength="30">
+            <br>
+            <button class="btn-entrar" onclick="submitWord()">ENVIAR</button>
+        </div>
+
+        <div id="votingSection" style="display: none;">
+            <h3>O que decides?</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 300px; margin: auto;">
+                <button onclick="sendVote(true)" style="background: #2ecc71; height: 100px; font-size: 24px; border-radius: 10px; color: white; border: none; font-weight: bold;">SIM</button>
+                <button onclick="sendVote(false)" style="background: #e74c3c; height: 100px; font-size: 24px; border-radius: 10px; color: white; border: none; font-weight: bold;">NAO</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const socket = io();
+        let selectedAvatarId = 0; 
+        let myName = ""; 
+
+        // Gerar os botoes de avatar
+        const grid = document.getElementById("avatarContainer");
+        for (let i = 0; i < 11; i++) {
+            let btn = document.createElement("button");
+            btn.className = "avatar-btn" + (i === 0 ? " selected" : "");
+            
+            let img = document.createElement("img");
+            img.src = `avatares/${i}.png`; 
+            img.style.width = "100%"; 
+            img.style.borderRadius = "4px"; 
+            img.style.pointerEvents = "none"; 
+            
+            btn.appendChild(img); 
+
+            btn.onclick = () => selectAvatar(i, btn);
+            grid.appendChild(btn);
+        }
+
+        function selectAvatar(id, clickedBtn) {
+            selectedAvatarId = id;
+            document.querySelectorAll(".avatar-btn").forEach(b => b.classList.remove("selected"));
+            clickedBtn.classList.add("selected");
+        }
+
+        function joinGame() {
+            // Esconde a mensagem de erro ao tentar entrar novamente
+            document.getElementById("errorMessage").style.display = "none";
+
+            let inputName = document.getElementById("playerName").value.trim().substring(0, 11);
+            myName = inputName === "" ? "Jogador Misterioso" : inputName;
+
+            const room = document.getElementById("roomCode").value;
+            
+            socket.emit("JOIN_ROOM", { name: myName, room: room, avatarId: selectedAvatarId });
+            
+            document.querySelector(".btn-entrar").style.display = "none";
+            document.getElementById("waitingText").style.display = "block";
+        }
+
+        // ==========================================
+        // LOGICA DE ERROS E RESPOSTAS DO SERVIDOR
+        // ==========================================
+
+        // Quando o servidor recusa a entrada (ex: sala cheia ou código errado)
+        socket.on("ERROR", (data) => {
+            const errorElement = document.getElementById("errorMessage");
+            errorElement.innerText = data.message;
+            errorElement.style.display = "block";
+
+            document.querySelector(".btn-entrar").style.display = "inline-block";
+            document.getElementById("waitingText").style.display = "none";
+        });
+
+        // Função reutilizável para quando a conexão com a sala cai
+        function handleDisconnection() {
+            const errorElement = document.getElementById("errorMessage");
+            errorElement.innerText = "Conexão com o servidor perdida!";
+            errorElement.style.display = "block";
+
+            document.getElementById("gameScreen").style.display = "none";
+            document.getElementById("waitingText").style.display = "none";
+            
+            document.getElementById("loginScreen").style.display = "block";
+            document.querySelector(".btn-entrar").style.display = "inline-block";
+        }
+
+        // Eventos que disparam a quebra de conexão:
+        socket.on("ROOM_CLOSED", handleDisconnection);         // Host clicou em "Fechar Sala"
+        socket.on("HOST_DISCONNECTED", handleDisconnection);   // Unity crashou ou foi fechado à força
+        socket.on("disconnect", handleDisconnection);          // Node.js caiu ou o telemóvel perdeu o Wi-Fi
+
+        // ==========================================
+        // LOGICA DOS MINIJOGOS (Reacao ao Unity)
+        // ==========================================
+
+        socket.on("GAME_STARTED", () => {
+            document.getElementById("loginScreen").style.display = "none";
+            document.getElementById("gameScreen").style.display = "block";
+            document.getElementById("waitingSection").style.display = "block";
+        });
+
+        socket.on("START_GLOBAL_WRITING", (data) => {
+            document.getElementById("votingSection").style.display = "none";
+            document.getElementById("waitingSection").style.display = "none";
+            document.getElementById("writingSection").style.display = "block";
+            
+            let myPrompt = data.prompts[myName];
+
+            let fraseFormatada = myPrompt.replace(/\[Blank\]/gi, "<span style='color: #ffcc00; font-weight: bold;'>[tua resposta]</span>");
+
+            document.getElementById("promptText").innerHTML = fraseFormatada;
+            
+            document.getElementById("blankWord").value = ""; 
+        });
+
+        function submitWord() {
+            const word = document.getElementById("blankWord").value;
+            if (word.trim() !== "") {
+                socket.emit("PLAYER_ACTION", { actionType: "SUBMIT_WORD", word: word });
+                
+                document.getElementById("writingSection").style.display = "none";
+                document.getElementById("waitingSection").style.display = "block";
+                document.getElementById("gameWaitingText").innerText = "Resposta enviada! A aguardar os outros jogadores...";
+            }
+        }
+
+        socket.on("START_VOTING_PHASE", (data) => {
+            document.getElementById("writingSection").style.display = "none";
+            
+            if (myName === data.authorToIgnore) {
+                document.getElementById("votingSection").style.display = "none";
+                document.getElementById("waitingSection").style.display = "block";
+                document.getElementById("gameWaitingText").innerText = "Estao a avaliar o teu cenario. Fica a torcer por um empate!";
+            } else {
+                document.getElementById("waitingSection").style.display = "none";
+                document.getElementById("votingSection").style.display = "block";
+            }
+        });
+
+        function sendVote(isYes) {
+            socket.emit("PLAYER_ACTION", { actionType: "SUBMIT_VOTE", voteValue: isYes });
+            
+            document.getElementById("votingSection").style.display = "none";
+            document.getElementById("waitingSection").style.display = "block";
+            document.getElementById("gameWaitingText").innerText = "Voto registado!";
+        }
+    </script>
+</body>
+</html>
