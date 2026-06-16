@@ -13,7 +13,7 @@ public class Sound
 
 public class AudioManager : MonoBehaviour
 {
-    // O Padrão Singleton para acesso global
+    
     public static AudioManager Instance;
 
     [Header("Configuração de Áudio")]
@@ -24,13 +24,13 @@ public class AudioManager : MonoBehaviour
     public Sound[] musicSounds;
     public Sound[] sfxSounds;
 
-    // Leitores de Áudio
+   
     private AudioSource musicSource;
     private AudioSource sfxSource;
 
     private void Awake()
     {
-        // Garante que só existe UM AudioManager no jogo todo
+        
         if (Instance == null)
         {
             Instance = this;
@@ -42,15 +42,15 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // Criar os leitores de áudio invisíveis no próprio objeto
+        
         musicSource = gameObject.AddComponent<AudioSource>();
         sfxSource = gameObject.AddComponent<AudioSource>();
 
-        // Ligar os leitores à mesa de mistura
+        
         musicSource.outputAudioMixerGroup = musicMixerGroup;
         sfxSource.outputAudioMixerGroup = sfxMixerGroup;
 
-        // A música deve repetir (loop)
+        
         musicSource.loop = true;
     }
 
@@ -64,10 +64,9 @@ public class AudioManager : MonoBehaviour
         }
 
 
-        // NOVO: Verifica se o clip já está no leitor e se já está a tocar
         if (musicSource.clip == s.clip && musicSource.isPlaying)
         {
-            return; // Sai da função imediatamente e não reinicia a música!
+            return; 
         }
 
         musicSource.clip = s.clip;
@@ -85,7 +84,6 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // PlayOneShot permite tocar vários SFX ao mesmo tempo sem se cortarem uns aos outros
         sfxSource.PlayOneShot(s.clip, s.volume);
     }
 }

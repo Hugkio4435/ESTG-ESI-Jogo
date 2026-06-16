@@ -1,0 +1,173 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|c:\\users\\hugo\\documents\\github\\estg-esi-jogo\\trivial_fr\\assets\\_scripts\\managers\\splitroommanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\managers\\splitroommanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|c:\\users\\hugo\\documents\\github\\estg-esi-jogo\\trivial_fr\\assets\\_scripts\\managers\\networkmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\managers\\networkmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|c:\\users\\hugo\\documents\\github\\estg-esi-jogo\\trivial_fr\\assets\\_scripts\\managers\\menumanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\managers\\menumanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|c:\\users\\hugo\\documents\\github\\estg-esi-jogo\\trivial_fr\\assets\\_scripts\\managers\\audiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\managers\\audiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|c:\\users\\hugo\\documents\\github\\estg-esi-jogo\\trivial_fr\\assets\\_scripts\\curvedtexttmp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\curvedtexttmp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|c:\\users\\hugo\\documents\\github\\estg-esi-jogo\\trivial_fr\\assets\\_scripts\\iminigame.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\iminigame.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|c:\\users\\hugo\\documents\\github\\estg-esi-jogo\\trivial_fr\\assets\\_scripts\\jogocerteiromanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\jogocerteiromanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|c:\\users\\hugo\\documents\\github\\estg-esi-jogo\\trivial_fr\\assets\\_scripts\\mainmenuspotlight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\mainmenuspotlight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|c:\\users\\hugo\\documents\\github\\estg-esi-jogo\\trivial_fr\\assets\\_scripts\\wavetext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50FA3CC8-AD24-DE83-DC32-2BCD770801AF}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\wavetext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SplitRoomManager.cs",
+              "DocumentMoniker": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\Managers\\SplitRoomManager.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\Managers\\SplitRoomManager.cs",
+              "ToolTip": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\Managers\\SplitRoomManager.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\Managers\\SplitRoomManager.cs",
+              "ViewState": "AgIAAAcCAAAAAAAAAAAQwBICAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T19:11:32.826Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NetworkManager.cs",
+              "DocumentMoniker": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\Managers\\NetworkManager.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\Managers\\NetworkManager.cs",
+              "ToolTip": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\Managers\\NetworkManager.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\Managers\\NetworkManager.cs",
+              "ViewState": "AgIAAI4AAAAAAAAAAAAAAOIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T19:09:00.479Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AudioManager.cs",
+              "DocumentMoniker": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\Managers\\AudioManager.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\Managers\\AudioManager.cs",
+              "ToolTip": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\Managers\\AudioManager.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\Managers\\AudioManager.cs",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAAAFUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T19:05:02.614Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CurvedTextTMP.cs",
+              "DocumentMoniker": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\CurvedTextTMP.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\CurvedTextTMP.cs",
+              "ToolTip": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\CurvedTextTMP.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\CurvedTextTMP.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAADIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T19:03:34.878Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IMinigame.cs",
+              "DocumentMoniker": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\IMinigame.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\IMinigame.cs",
+              "ToolTip": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\IMinigame.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\IMinigame.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T19:02:55.358Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "JogoCerteiroManager.cs",
+              "DocumentMoniker": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\JogoCerteiroManager.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\JogoCerteiroManager.cs",
+              "ToolTip": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\JogoCerteiroManager.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\JogoCerteiroManager.cs",
+              "ViewState": "AgIAAI0BAAAAAAAAAAAAAIIBAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T19:01:08.951Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MainMenuSpotlight.cs",
+              "DocumentMoniker": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\MainMenuSpotlight.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\MainMenuSpotlight.cs",
+              "ToolTip": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\MainMenuSpotlight.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\MainMenuSpotlight.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAYwCgAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T19:00:14.795Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "WaveText.cs",
+              "DocumentMoniker": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\WaveText.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\WaveText.cs",
+              "ToolTip": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\WaveText.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\WaveText.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAAAD8AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T18:59:32.787Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MenuManager.cs",
+              "DocumentMoniker": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\Managers\\MenuManager.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\Managers\\MenuManager.cs",
+              "ToolTip": "C:\\Users\\Hugo\\Documents\\GitHub\\ESTG-ESI-Jogo\\Trivial_Fr\\Assets\\_Scripts\\Managers\\MenuManager.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\Managers\\MenuManager.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAAAcwOwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T18:43:00.06Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

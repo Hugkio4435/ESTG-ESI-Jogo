@@ -10,7 +10,7 @@ public class TriviaQuestion
 {
     public string questionText;
     public string[] answers = new string[4];
-    public int correctAnswerIndex; // 0=A, 1=B, 2=C, 3=D
+    public int correctAnswerIndex; 
 }
 
 public class JogoCerteiroManager : MonoBehaviour, IMinigame
@@ -140,7 +140,7 @@ public class JogoCerteiroManager : MonoBehaviour, IMinigame
 
     public void InitializeGame(List<ConnectedPlayer> playersFromLobby, MenuManager manager)
     {
-        // === BOMBA NUCLEAR DE LIMPEZA ===
+        
         if (leaderboardContainer != null)
         {
             foreach (Transform child in leaderboardContainer)
@@ -148,7 +148,7 @@ public class JogoCerteiroManager : MonoBehaviour, IMinigame
                 Destroy(child.gameObject);
             }
         }
-        // ================================
+        
 
         AudioManager.Instance.PlayMusic("TriviaTheme");
 
@@ -376,7 +376,7 @@ public class JogoCerteiroManager : MonoBehaviour, IMinigame
     {
         if (currentPhase == GamePhase.LeaderboardPhase)
         {
-            // === BOMBA NUCLEAR DE LIMPEZA ===
+            
             if (leaderboardContainer != null)
             {
                 foreach (Transform child in leaderboardContainer)
@@ -384,7 +384,7 @@ public class JogoCerteiroManager : MonoBehaviour, IMinigame
                     Destroy(child.gameObject);
                 }
             }
-            // ================================
+            
 
             if (menuManager != null)
             {

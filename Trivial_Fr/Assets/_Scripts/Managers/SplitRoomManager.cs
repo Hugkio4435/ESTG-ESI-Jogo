@@ -157,7 +157,6 @@ public class SplitRoomManager : MonoBehaviour, IMinigame
 
     public void InitializeGame(List<ConnectedPlayer> playersFromLobby, MenuManager manager)
     {
-        // === BOMBA NUCLEAR DE LIMPEZA ===
         if (leaderboardContainer != null)
         {
             foreach (Transform child in leaderboardContainer)
@@ -165,7 +164,6 @@ public class SplitRoomManager : MonoBehaviour, IMinigame
                 Destroy(child.gameObject);
             }
         }
-        // ================================
 
         AudioManager.Instance.PlayMusic("SplitRoomTheme");
 
@@ -534,7 +532,6 @@ public class SplitRoomManager : MonoBehaviour, IMinigame
     {
         if (currentPhase == GamePhase.LeaderboardPhase)
         {
-            // === BOMBA NUCLEAR DE LIMPEZA ===
             if (leaderboardContainer != null)
             {
                 foreach (Transform child in leaderboardContainer)
@@ -542,7 +539,6 @@ public class SplitRoomManager : MonoBehaviour, IMinigame
                     Destroy(child.gameObject);
                 }
             }
-            // ================================
 
             if (menuManager != null)
             {
@@ -551,9 +547,6 @@ public class SplitRoomManager : MonoBehaviour, IMinigame
             }
 
             if (leaderboardPanel != null) leaderboardPanel.SetActive(false);
-
-            // A CULPADA ERA ESTA LINHA. APAGA-A:
-            // this.gameObject.SetActive(false); 
         }
     }
 }

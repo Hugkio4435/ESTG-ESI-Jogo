@@ -61,7 +61,7 @@ public class WaveText : MonoBehaviour
             {
                 Color color = GetColorFromPool(Time.time * colorSpeed + i * 0.15f);
 
-                // Force alpha to full visibility
+                
                 color.a = 1f;
 
                 Color32 finalColor = color;

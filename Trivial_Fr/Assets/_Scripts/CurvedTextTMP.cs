@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-[ExecuteAlways] // Permite ver a curva no Editor sem ter de dar Play
+[ExecuteAlways] 
 public class CurvedTextTMP : MonoBehaviour
 {
     public TMP_Text myText;
@@ -23,7 +23,7 @@ public class CurvedTextTMP : MonoBehaviour
         float boundsMinX = myText.bounds.min.x;
         float boundsMaxX = myText.bounds.max.x;
 
-        // Passa por todas as letras
+        
         for (int i = 0; i < characterCount; i++)
         {
             if (!textInfo.characterInfo[i].isVisible) continue;
@@ -33,22 +33,22 @@ public class CurvedTextTMP : MonoBehaviour
 
             Vector3[] vertices = textInfo.meshInfo[materialIndex].vertices;
 
-            // Move os 4 vértices que compõem cada letra
+            
             for (int j = 0; j < 4; j++)
             {
                 Vector3 origPos = vertices[vertexIndex + j];
 
-                // Calcula a percentagem da posição horizontal da letra (0 a 1)
+                
                 float charMidBaselinePos = (origPos.x - boundsMinX) / (boundsMaxX - boundsMinX);
 
-                // Sobe ou desce o Y (altura) baseado na curva que desenhaste no Inspector
+                
                 origPos.y += vertexCurve.Evaluate(charMidBaselinePos) * curveMultiplier;
 
                 vertices[vertexIndex + j] = origPos;
             }
         }
 
-        // Aplica as alterações visuais de volta na malha do texto
+       
         for (int i = 0; i < textInfo.materialCount; i++)
         {
             if (textInfo.meshInfo[i].mesh != null)
