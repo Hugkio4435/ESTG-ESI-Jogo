@@ -2,6 +2,6 @@
 
 O design interativo, a paleta de cores e o fluxo de ecrãs do nosso sistema foram integralmente pensados e desenhados utilizando o Figma, garantindo uma experiência de utilizador fluida e adaptativa.
 
-Link do figma (Onde se encontram todos os prototipos ) ==> https://www.figma.com/design/BMgcOwDXmNEQA60d0olTC7/Trivia-Game?node-id=0-1&p=f
+Link do figma (Onde se encontram todos os prototipos ) ==> https://www.figma.com/design/BMgcOwDXmNEQA60d0olTC7/Trivia-Game?node-id=0-1&t=1x1Jq3swovMQIRQp-1
 
 
