@@ -1,7 +1,7 @@
 # Documento de Retrospectiva e Relatório Final
 
 ## 1. Resumo do Projeto
-O desenvolvimento do "ESTG-ESI-Jogo" foi concluído com sucesso, resultando num *party game* multiplayer funcional, interativo e divertido. A equipa conseguiu cumprir o objetivo principal: interligar três ecossistemas tecnológicos distintos (Unity/C#, Node.js e HTML/JS) numa única experiência em tempo real.
+O desenvolvimento do "ESTG-ESI-Jogo" foi concluído com sucesso, resultando num *party game* multiplayer funcional, interativo e divertido. A equipa conseguiu cumprir o objetivo principal (Apesar de só termos feito 2 mini-jogos, e não 4) : interligar três ecossistemas tecnológicos distintos (Unity/C#, Node.js e HTML/JS) numa única experiência em tempo real. 
 
 ## 2. Organização e Metodologia
 A nossa equipa dividiu o trabalho recorrendo a princípios ágeis de desenvolvimento. A separação de responsabilidades foi clara desde o início:
