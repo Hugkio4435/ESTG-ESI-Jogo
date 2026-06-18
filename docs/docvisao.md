@@ -4,19 +4,19 @@
 O nosso projeto tem como objetivo desenvolver um sistema no formato de *party game* multiplayer, focado no entretenimento social. Na prática, criámos um jogo que permite a um grupo de pessoas jogar minijogos interativos na mesma sala. A ação principal decorre num ecrã central partilhado (desenvolvido no motor Unity), enquanto cada jogador utiliza o seu próprio telemóvel como comando sem fios.
 
 ### (b) Escopo
-O nosso sistema foi desenhado para animar eventos sociais presenciais. O ambiente ideal de utilização inclui festas em casa, encontros de estudantes, convívios académicos (como os ensaios e festas da nossa Tuna), e eventos de *teambuilding*. O foco está numa interação rápida, sem atritos e divertida entre a malta.
+O nosso sistema foi desenhado para animar eventos sociais presenciais ou virtualmente. O ambiente ideal de utilização inclui festas em casa, encontros de estudantes, encontros virtuais, e eventos de *teambuilding*. O foco está numa interação rápida, sem atritos e divertida entre a malta.
 
 ### (c) Partes interessadas (Stakeholders)
 Identificámos os seguintes grupos de pessoas que vão usar ou beneficiar do nosso sistema:
 * **Jogadores Casuais:** Quem vai ativamente jogar. Procuram diversão imediata e valorizam não ter de instalar nenhuma aplicação no telemóvel.
 * **Anfitriões (Hosts):** A pessoa que organiza o evento e precisa de um jogo fácil de configurar para animar o grupo.
-* **A Nossa Equipa:** Como criadores do projeto, beneficiamos diretamente para a nossa avaliação na disciplina de Engenharia de Software I.
+* **A Nossa Equipa:** Como criadores do projeto, beneficiamos diretamente para a nossa avaliação na disciplina de Engenharia de Software I. E também foi benéfico para desenvolver e aprofundar os nossos conhecimentos em importantes áreas da engenharia informática (Redes, html, motores de jogos)
 
 ### (d) Equipe do projeto
 A nossa equipa de desenvolvimento dividiu o trabalho da seguinte forma:
 * **Hugo Marques (Eu):** Fiquei responsável pela construção da interface e integração de todo o sistema dentro do Unity (C#).
 * **Miguel Colaço:** Desenvolveu a arquitetura de rede e o servidor backend.
-* **Filipe:** Construiu o frontend web em HTML que serve de interface no telemóvel.
+* **Filipe:** Construiu o frontend inicial web em HTML que serve de interface no telemóvel, e contribuiu para o desnvolvimento da UI do jogo.
 * **Miguel Fernandes e André:** Trataram da parte criativa e visual, garantindo o design e o UI/UX do jogo.
 
 ### (e) Características do sistema
