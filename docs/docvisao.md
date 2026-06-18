@@ -40,5 +40,3 @@ O sistema tem algumas limitações e não funcionará nas seguintes condições:
 * **Excesso de Jogadores:** Trancámos mecanicamente o limite a 8 jogadores por sala para evitar que o ecrã fique confuso de ler e para garantir a estabilidade do servidor.
 * **Servidor Inativo:** O jogo precisa que o nosso serviço *backend* em Node.js esteja a correr continuamente; caso contrário, as ligações caem.
 
-### (h) Integração LLM (Opcional)
-Como perspetiva de futuro, planeamos integrar um LLM a correr localmente (como o Ollama). A nossa ideia é colocar o LLM a atuar como um "Mestre de Jogo", analisando as frases e o humor das respostas que os jogadores deram nas rondas anteriores. Com isso, o LLM conseguiria gerar perguntas e cenários completamente novos para o minijogo, tornando a experiência virtualmente infinita e sempre personalizada para aquele grupo específico.
