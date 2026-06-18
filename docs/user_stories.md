@@ -2,7 +2,7 @@
 
 Para garantir que o sistema cumpre as necessidades dos utilizadores, dividimos os requisitos em User Stories, separadas por tipo de utilizador (Host/Ecrã Principal e Jogador/Mobile).
 
-### 📺 Utilizador: Host (Ecrã Principal / Unity)
+### Utilizador: Host (Ecrã Principal / Unity)
 
 **US01: Criação de Sessão Dinâmica**
 * **Como** Host da partida,
@@ -19,7 +19,7 @@ Para garantir que o sistema cumpre as necessidades dos utilizadores, dividimos o
 * **Eu quero** que o sistema calcule as pontuações e ordene os jogadores de forma decrescente no final de cada ronda,
 * **Para que** o grupo consiga ver claramente quem está a ganhar a competição através de um gráfico limpo e direto.
 
-### 📱 Utilizador: Jogador (Comando Mobile / HTML)
+### Utilizador: Jogador (Comando Mobile / HTML)
 
 **US04: Entrada Fluida e Segura**
 * **Como** jogador mobile,
