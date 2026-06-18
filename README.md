@@ -1,4 +1,4 @@
-# ESTG-ESI-Jogo
+# ESTG-ESI-Jogo_Interativo
 Trabalho de Engenharia de Software I
 
 Neste projeto será realizado um jogo interativo de estilo semelhante aos populares videojogos "Kahoot" e "Jackbox", onde uma pessoa será o anfitrião, que hospedará a sala, e os restantes jogadores poderão aderir e jogar, a partir, tanto do computador, como do telemóvel. O jogo visa o divertimento com amigos e aquisição de conhecimentos enquanto os players se divertem a jogar.
