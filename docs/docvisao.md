@@ -1,4 +1,4 @@
-# Documento de Visão: ESTG-ESI-Jogo
+# Documento de Visão: ESTG-ESI-Jogo_Interativo
 
 ### (a) Objetivo
 O nosso projeto tem como objetivo desenvolver um sistema no formato de *party game* multiplayer, focado no entretenimento social. Na prática, criámos um jogo que permite a um grupo de pessoas jogar minijogos interativos na mesma sala. A ação principal decorre num ecrã central partilhado (desenvolvido no motor Unity), enquanto cada jogador utiliza o seu próprio telemóvel como comando sem fios.
